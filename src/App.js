@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import AppNavbar from "./components/layout/AppNavbar";
 import axios from 'axios';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./components/dashboard/Dashboard";
+import Students from "./components/students/Students";
+import Employees from "./components/employees/Employees";
 
 const promiseExample = () => new Promise( resolve => {
     setTimeout( () => {
@@ -87,12 +91,16 @@ function App () {
 
     return (
         <>
-            <AppNavbar />
-            <Container>
-                <h1>Hola mundo desde App.</h1>
-
-                {/* Contenido de la aplicación */ }
-            </Container>
+            <BrowserRouter>
+                <AppNavbar />
+                <Container>
+                    <Routes>
+                        <Route path="/" element={ <Dashboard /> } ></Route>
+                        <Route path="estudiantes" element={ <Students /> } ></Route>
+                        <Route path="empleados" element={ <Employees /> } ></Route>
+                    </Routes>
+                </Container>
+            </BrowserRouter>
         </>
     )
 }
