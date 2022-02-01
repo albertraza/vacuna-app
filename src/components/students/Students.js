@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Card } from "react-bootstrap";
+import PrimaryButton from "../../shared/buttons/PrimaryButton";
+import CardLayout from "../../shared/card/CardLayout";
 import Table from "../../shared/table/Table";
 
 export default function Students () {
@@ -18,8 +19,7 @@ export default function Students () {
         async function getStudents () {
             const response = await axios.get( `https://vacunaapp.azurewebsites.net/api/estudiantes`, {
                 headers: {
-                    authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1NTc4RjhEMTAwNTRGMTE1RkRDMUI2QzY4QjZFMzNDRUZGNDg0NzkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJKVmVQalJBRlR4RmYzQnRzYUxialBPXzBoSGsifQ.eyJuYmYiOjE2NDM2NjA5NjIsImV4cCI6MTY0MzY2NDU2MiwiaXNzIjoiaHR0cHM6Ly92YWN1bmFhcHAuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwiY2xpZW50X2lkIjoiVmFjdW5hQVBQLlByZXNlbnRhdGlvbiIsInN1YiI6IjA3YTA3MTAxLWUwODMtNDRiNy04Njk1LTkyNmI4NGE5OWIzMiIsImF1dGhfdGltZSI6MTY0MzM5NDI5OCwiaWRwIjoibG9jYWwiLCJqdGkiOiI3NTQ5M0JBMDUwM0U2NzQ4QjJBOUQzMjc3NkU5NjBGNSIsInNpZCI6IkUyRjY5OTMwRDk5NzNCRDdGMEJDRDE3OTdCRjYwRjZCIiwiaWF0IjoxNjQzNjYwOTYyLCJzY29wZSI6WyJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwib3BlbmlkIiwicHJvZmlsZSJdLCJhbXIiOlsicHdkIl19.d1NZLsT3AUVYw0IkuOa-B3utyLVA9OBwU7ORXFkf9YCkq83a5lpNa4yknzd7eiwbJQriiPPpkryc9Fr190b4wvF_U6QrjKQPgFAAmnWLGvnNLdXPSXRxBKrIMac8SkgY3nQ3jdlypdOslVlf3BbymzhIBUIjlGAHIWEprdqUbHoa-zgTOHbiaKDt46pVBnOsOL6CTgDHFNjwPwN2f9kicaIuOTmgxhi7nJwuqpx8hO_bBoCgW_-C4X53_W3DgiUcjbyHjg9ZZJ9mZal2NLHc9EzzC5zj2OtsVNtBOj0Ih5QuLMWQeofxXU7Sdr5gYCaC-ucldllKjtYKV0UF4i9pBw',
-                    'Access-Control-Allow-Origin': 'https://localhost:3000'
+                    authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1NTc4RjhEMTAwNTRGMTE1RkRDMUI2QzY4QjZFMzNDRUZGNDg0NzkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJKVmVQalJBRlR4RmYzQnRzYUxialBPXzBoSGsifQ.eyJuYmYiOjE2NDM3NDU1NDYsImV4cCI6MTY0Mzc0OTE0NiwiaXNzIjoiaHR0cHM6Ly92YWN1bmFhcHAuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwiY2xpZW50X2lkIjoiVmFjdW5hQVBQLlByZXNlbnRhdGlvbiIsInN1YiI6IjA3YTA3MTAxLWUwODMtNDRiNy04Njk1LTkyNmI4NGE5OWIzMiIsImF1dGhfdGltZSI6MTY0MzcyNzcxMywiaWRwIjoibG9jYWwiLCJqdGkiOiI0NDk0QjRBMTcxQ0UxRUQ2Mzk5QkU3QkFEQjM3NzMzMCIsInNpZCI6IkY1Qzc1OTQzNDNGNTNFRkQzREI3QjA5NzQxNDU1NUE4IiwiaWF0IjoxNjQzNzQ1NTQ2LCJzY29wZSI6WyJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwib3BlbmlkIiwicHJvZmlsZSJdLCJhbXIiOlsicHdkIl19.313W8ql4XlQ-1-g-ERIL-lVTae9RohM5Wu47PFit6Bei_0YbiLao5zHchkYfp6-_iATqh6bwIUm-gQBoSAHz4ap5qFyGwNGxZZtbbit3vAZiH7KoqK2_m0GSR6CEurUKXWr9PRcyLL2-lHjI8ueWrwGrpEdW4QEsJ9t9DcCbKB89tzuEDokY8b_8wMM9CPxCivzxzBKNU5D_QuhT2r48QIOjAiTMuhX4o5H37k_SAFZa_C5vHn6Z4Wnsy21BqLLYP3C2nOEWVMC6tgxjSv-kquGe25gtnucpb6fdcasaX7a67uXLhACngl8uwt9UpFWJCFCtBgEp_r3HnfU7NNy8wQ', // Aqui va el token
                 }
             } )
             const { data } = response;
@@ -30,25 +30,16 @@ export default function Students () {
     }, [] );
 
     return (
-        <Card className="mt-5">
-            <Card.Header>
-                <div className="d-flex w-100">
-
-                    <div className="d-block">
-                        <h4>Lista de Estudiantes</h4>
-                    </div>
-
-                    <div style={ { marginLeft: 'auto' } }>
-                        <button className="btn btn-primary">Añadir nuevo</button>
-                    </div>
-                </div>
-            </Card.Header>
-            <Card.Body>
-                <Table
-                    columns={ columns }
-                    data={ students }
-                />
-            </Card.Body>
-        </Card>
+        <CardLayout
+            title={ 'Listado de Estudiantes' }
+            subHeader={
+                <PrimaryButton text="Añadir nuevo" />
+            }
+        >
+            <Table
+                columns={ columns }
+                data={ students }
+            />
+        </CardLayout>
     )
 }
