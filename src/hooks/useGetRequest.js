@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default function useGetRequest ( url ) {
+export default function useGetRequest ( url, useToken = true ) {
     const [ data, setData ] = useState();
     const [ error, setError ] = useState( null );
     const [ isLoading, setIsLoading ] = useState( true );
@@ -12,7 +12,8 @@ export default function useGetRequest ( url ) {
             try {
                 const response = await axios.get( url, {
                     headers: {
-                        authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1NTc4RjhEMTAwNTRGMTE1RkRDMUI2QzY4QjZFMzNDRUZGNDg0NzkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJKVmVQalJBRlR4RmYzQnRzYUxialBPXzBoSGsifQ.eyJuYmYiOjE2NDM4MzI0MjgsImV4cCI6MTY0MzgzNjAyOCwiaXNzIjoiaHR0cHM6Ly92YWN1bmFhcHAuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwiY2xpZW50X2lkIjoiVmFjdW5hQVBQLlByZXNlbnRhdGlvbiIsInN1YiI6IjA3YTA3MTAxLWUwODMtNDRiNy04Njk1LTkyNmI4NGE5OWIzMiIsImF1dGhfdGltZSI6MTY0Mzc0OTU2MiwiaWRwIjoibG9jYWwiLCJqdGkiOiI0NEVCNzc5NzQyQkYxNkQ5MTNBMEQ5NzdGRTgwOUE2NiIsInNpZCI6IkQzQ0JEOTNCMzJFQjQ1MjJGMDcxRDZCRjI5MDNCODdEIiwiaWF0IjoxNjQzODMyNDI4LCJzY29wZSI6WyJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwib3BlbmlkIiwicHJvZmlsZSJdLCJhbXIiOlsicHdkIl19.YW8Q9h2V6wbl3wxk-eUnSlDxYZGxjHXFTBY4nvDV8-j_yWzdUAXgNgrK2yS091q9DI_IrTF-Qc_MM_OhL0ALf8Nlmcb34Ycnvl12Hrs3HdqOeNguhWEWhJ8eFLA6f7SSLUFCeWn-_EwRceNpZzSsq3lK1-oA0dEW3OiRJjd99oqfBJCcI0V_GO1ApJ3dWIhQ5Ja-PXp-fCD3cgWSx9LivQOl8T1zhTsxDXiDM4hnEXDdhShD8vlyYg6wC-aJ_Y0FgHmzAYViHHSpSN2wYEY17VPAarrLpcUyXMMcXF2leYZpbehbSaPp2js_D0GeYr52n1thxwjbVi4q4EOwM-tsVQ', // Aqui va el token
+                        authorization: useToken ? 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1NTc4RjhEMTAwNTRGMTE1RkRDMUI2QzY4QjZFMzNDRUZGNDg0NzkiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJKVmVQalJBRlR4RmYzQnRzYUxialBPXzBoSGsifQ.eyJuYmYiOjE2NDM4MzY0MTksImV4cCI6MTY0Mzg0MDAxOSwiaXNzIjoiaHR0cHM6Ly92YWN1bmFhcHAuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOiJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwiY2xpZW50X2lkIjoiVmFjdW5hQVBQLlByZXNlbnRhdGlvbiIsInN1YiI6IjA3YTA3MTAxLWUwODMtNDRiNy04Njk1LTkyNmI4NGE5OWIzMiIsImF1dGhfdGltZSI6MTY0Mzc0OTU2MiwiaWRwIjoibG9jYWwiLCJqdGkiOiI4MDlBODU2MjkzMzIwNkFFODYxODQxNTBDQ0IwMzNCQiIsInNpZCI6IkQzQ0JEOTNCMzJFQjQ1MjJGMDcxRDZCRjI5MDNCODdEIiwiaWF0IjoxNjQzODM2NDE5LCJzY29wZSI6WyJWYWN1bmFBUFAuUHJlc2VudGF0aW9uQVBJIiwib3BlbmlkIiwicHJvZmlsZSJdLCJhbXIiOlsicHdkIl19.Hm5zCUG3RZJeG9CvkciUXqTxjFjpyg1xLksLsuaVQR8XNxfYygwuK_NWXF-7rZ9kc5Qbhor6JKIhXpU60UyEx_h8jy10KFOuZpX9GoAFXxkX_wKNpUVMFlWl5ETw8WcziOfiT92Bl0L13eRwzVdwv1BnWDxFwOrj3yuL_8GbVwbvF3C5cVM85OxlDctaDJQINmubaN51Aqg3gQwtsg3G7a5Z_7ChpiW752YwbXqTLQP_sA3VNCnwhJZ8n3s0-0cJA2udgMUtEzS7mMISv83jKkPIoQUEaqZ8nCosrIwLr9RjzjSKA83-a3yUaF6qOmUvsUBnJTxoWraQUtKQaAsUAw'  // Aqui va el token
+                            : undefined
                     }
                 } )
                 const { data } = response;

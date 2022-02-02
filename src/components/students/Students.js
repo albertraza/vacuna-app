@@ -1,13 +1,18 @@
 import axios from "axios";
+import { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
+import UserContext from "../../contexts/UserContext";
 import useGetRequest from "../../hooks/useGetRequest";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
 import Table from "../../shared/table/Table";
 
 export default function Students () {
+    const userContext = useContext( UserContext );
+    const { user: { name: userName } = { name: '' } } = userContext;
+
     const columns = [
         {
             label: 'Matricula', prop: 'universityId'
@@ -22,10 +27,14 @@ export default function Students () {
                     <>
                         <button className="btn btn-secondary" style={ { marginRight: '3px' } }>Editar</button>
                         <button className="btn btn-danger">Eliminar</button>
+
                     </>
                 )
             }
-        }
+        },
+        {
+            label: 'Usuario', prop: 'userName'
+        },
     ];
 
     const result = useGetRequest( `https://vacunaapp.azurewebsites.net/api/estudiantes` );
@@ -35,7 +44,12 @@ export default function Students () {
         <CardLayout
             title={ 'Listado de Estudiantes' }
             subHeader={
-                <PrimaryButton text="Añadir nuevo" />
+                <>
+                    <PrimaryButton text="Añadir nuevo" style={ { marginRight: userName ? '10px' : undefined } } />
+                    {
+                        userName && <span> <b>Usuario: </b> { userName } </span>
+                    }
+                </>
             }
         >
             {
@@ -47,7 +61,7 @@ export default function Students () {
                     <>
                         <Table
                             columns={ columns }
-                            data={ students }
+                            data={ students?.map( student => ( { userName, ...student } ) ) }
                         />
                         {
                             isLoading && (
