@@ -5,7 +5,7 @@ function TableBody ( { data, columns } ) {
     return <>
         <tbody>
             {
-                data.map( ( user ) => {
+                data?.map( ( user ) => {
                     return <TableRow
                         key={ Math.random() }
                         rowData={ user }

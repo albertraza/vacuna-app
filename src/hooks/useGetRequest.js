@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default function useGetRequest ( url ) {
-    const [ data, setData ] = useState( [] );
+    const [ data, setData ] = useState();
     const [ error, setError ] = useState( null );
     const [ isLoading, setIsLoading ] = useState( true );
 
@@ -21,7 +21,6 @@ export default function useGetRequest ( url ) {
                 const errorResult = await err.toJSON();
                 const { message } = errorResult;
                 setError( message );
-                setData( [] );
             } finally {
                 setIsLoading( false );
             }
