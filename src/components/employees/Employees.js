@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
+import withData from "../../hocs/withData";
 import useGetRequest from "../../hooks/useGetRequest";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
+import Actions from "../../shared/components/Actions";
 import Table from "../../shared/table/Table";
 
 /*
@@ -18,11 +20,24 @@ La información viene del servicio web https://vacunaapp.azurewebsites.net/api/e
 
 */
 export default function Employees () {
+
+    function handleEdit ( data ) {
+        console.log( { edit: data } );
+        // Accion de editar.
+    }
+
+    function handleDelete ( data ) {
+        console.log( { delete: data } );
+    }
+
     const columns = [
         { label: 'Nombre', prop: 'name' },
         { label: 'Apellido', prop: 'lastName' },
         { label: 'Telefono', prop: 'phone' },
-        { label: 'Puesto', prop: 'position' }
+        { label: 'Puesto', prop: 'position' },
+        {
+            label: 'Acciones', prop: 'id', render: withData( Actions )( handleEdit, handleDelete )
+        }
     ];
 
     const { data: employees, error, isLoading } = useGetRequest( `https://vacunaapp.azurewebsites.net/api/empleados` );

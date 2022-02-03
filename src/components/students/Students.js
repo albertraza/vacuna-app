@@ -1,19 +1,28 @@
-import axios from "axios";
 import { useContext } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
 import UserContext from "../../contexts/UserContext";
+import withData from "../../hocs/withData";
 import useGetRequest from "../../hooks/useGetRequest";
+import useTableActions from "../../hooks/useTableActions";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
+import Actions from "../../shared/components/Actions";
 import Table from "../../shared/table/Table";
 
 export default function Students () {
     const userContext = useContext( UserContext );
     const { user: { name: userName } = { name: '' } } = userContext;
 
-    const columns = [
+    function handleEdit ( data ) {
+        console.log( { edit: data } );
+        // Accion de editar.
+    }
+
+    function handleDelete ( data ) {
+        console.log( { delete: data } );
+    }
+
+    const tableColumns = [
         {
             label: 'Matricula', prop: 'universityId'
         },
@@ -21,21 +30,13 @@ export default function Students () {
         { label: 'Telefono', prop: 'phone' },
         { label: 'Nombre', prop: 'name' },
         { label: 'Apellido', prop: 'lastName' },
-        {
-            label: 'Acciones', prop: 'id', render: ( { id } ) => {
-                return (
-                    <>
-                        <button className="btn btn-secondary" style={ { marginRight: '3px' } }>Editar</button>
-                        <button className="btn btn-danger">Eliminar</button>
-
-                    </>
-                )
-            }
-        },
-        {
-            label: 'Usuario', prop: 'userName'
-        },
     ];
+
+    const columns = useTableActions( {
+        tableColumns,
+        onEdit: handleEdit,
+        onDelete: handleDelete
+    } );
 
     const result = useGetRequest( `https://vacunaapp.azurewebsites.net/api/estudiantes` );
     const { data: students, error, isLoading } = result;
