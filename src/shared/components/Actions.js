@@ -1,4 +1,10 @@
-export default function Actions ( { data, onEdit, onDelete, onView } ) {
+import PropTypes from 'prop-types';
+export default function Actions ( {
+    data,
+    onEdit,
+    onDelete,
+    onView
+} ) {
     return (
         <>
             {
@@ -36,3 +42,11 @@ export default function Actions ( { data, onEdit, onDelete, onView } ) {
         </>
     )
 }
+
+
+Actions.propTypes = {
+    data: PropTypes.object,
+    onEdit: PropTypes.func,
+    onDelete: PropTypes.func,
+    onView: PropTypes.func
+};
