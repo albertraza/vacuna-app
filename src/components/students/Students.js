@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Alert, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import UserContext from "../../contexts/UserContext";
 import withData from "../../hocs/withData";
 import useGetRequest from "../../hooks/useGetRequest";
@@ -12,6 +13,7 @@ import Table from "../../shared/table/Table";
 export default function Students () {
     const userContext = useContext( UserContext );
     const { user: { name: userName } = { name: '' } } = userContext;
+    const navigate = useNavigate();
 
     function handleEdit ( data ) {
         console.log( { edit: data } );
@@ -46,10 +48,17 @@ export default function Students () {
             title={ 'Listado de Estudiantes' }
             subHeader={
                 <>
-                    <PrimaryButton text="Añadir nuevo" style={ { marginRight: userName ? '10px' : undefined } } />
+
+                    <PrimaryButton
+                        text="Añadir nuevo"
+                        style={ { marginRight: userName ? '10px' : undefined } }
+                        onClick={ e => navigate( '/estudiantes/nuevo' ) }
+                    />
+
                     {
                         userName && <span> <b>Usuario: </b> { userName } </span>
                     }
+
                 </>
             }
         >

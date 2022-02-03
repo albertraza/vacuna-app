@@ -6,6 +6,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Students from "./components/students/Students";
 import Employees from "./components/employees/Employees";
 import UserProvider from "./contexts/UserProvider";
+import StudentForm from "./components/students/form/StudentForm";
 
 function App () {
     return (
@@ -17,6 +18,7 @@ function App () {
                         <Routes>
                             <Route path="/" element={ <Dashboard /> } ></Route>
                             <Route path="estudiantes" element={ <Students /> } ></Route>
+                            <Route path="estudiantes/nuevo" element={ <StudentForm /> } ></Route>
                             <Route path="empleados" element={ <Employees /> } ></Route>
                         </Routes>
                     </Container>
