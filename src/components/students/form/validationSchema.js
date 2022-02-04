@@ -1,16 +1,5 @@
 import * as Yup from 'yup';
 
-//  initialValues: {
-//             universityId: '',
-//             name: '',
-//             lastName: '',
-//             identificationCard: '',
-//             locationId: '',
-//             sexId: '',
-//             address: '',
-//             phone: ''
-//         },
-
 const maxTemplate = 'Maximo de ${max} caracteres excedidos.';
 export const validationSchema = Yup.object( {
     universityId: Yup.string().max( 8, maxTemplate ).required( 'La matricula es requerida.' ),
