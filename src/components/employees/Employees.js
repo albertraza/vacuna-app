@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
 import withData from "../../hocs/withData";
 import useGetRequest from "../../hooks/useGetRequest";
+import useTableActions from "../../hooks/useTableActions";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
 import Actions from "../../shared/components/Actions";
@@ -30,15 +31,18 @@ export default function Employees () {
         console.log( { delete: data } );
     }
 
-    const columns = [
+    const tableColumns = [
         { label: 'Nombre', prop: 'name' },
         { label: 'Apellido', prop: 'lastName' },
         { label: 'Telefono', prop: 'phone' },
-        { label: 'Puesto', prop: 'position' },
-        {
-            label: 'Acciones', prop: 'id', render: withData( Actions )( handleEdit, handleDelete )
-        }
+        { label: 'Puesto', prop: 'position' }
     ];
+
+    const columns = useTableActions( {
+        tableColumns,
+        onEdit: handleEdit,
+        onDelete: handleDelete
+    } );
 
     const { data: employees, error, isLoading } = useGetRequest( `https://vacunaapp.azurewebsites.net/api/empleados` );
 
