@@ -2,13 +2,15 @@ import { useFormik } from "formik";
 import { Col, Form, Row } from "react-bootstrap";
 import useGetRequest from "../../../hooks/useGetRequest";
 import CardLayout from "../../../shared/card/CardLayout";
+import { isValidInput } from "../../../shared/form/isValidInput";
+import { validationSchema } from "./validationSchema";
 
 export default function StudentForm () {
     const { data: locations } = useGetRequest( 'https://vacunaapp.azurewebsites.net/api/recintos' );
     const { data: genders } = useGetRequest( 'https://vacunaapp.azurewebsites.net/api/generos' );
 
-    function handleSave () {
-        console.log( 'guardar' );
+    function handleSave ( values ) {
+        console.log( { values } );
     }
 
     const form = useFormik( {
@@ -21,16 +23,18 @@ export default function StudentForm () {
             sexId: '',
             address: '',
             phone: ''
-        }
+        },
+        validationSchema: validationSchema,
+        onSubmit: handleSave
     } );
 
-    const { values, handleChange } = form;
+    const { values, handleChange, errors, handleBlur, touched, handleSubmit } = form;
 
     return (
         <CardLayout
             title={ "Crear de estudiante" }
             useFooter
-            onSubmit={ handleSave }
+            onSubmit={ handleSubmit }
             returnUrl="/estudiantes"
         >
             <Form>
@@ -40,34 +44,51 @@ export default function StudentForm () {
                         <label className="form-label">Matricula</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={ `form-control ${ isValidInput( form, 'universityId' ) ? 'is-invalid' : '' }` }
                             name="universityId"
                             placeholder="Matricula"
                             value={ values.universityId }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         />
+
+                        {
+                            isValidInput( form, 'universityId' ) && <small className="text-danger "> { errors.universityId } </small>
+                        }
+
                     </Form.Group>
                     <Form.Group as={ Col } md="5">
                         <label className="form-label">Nombre</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={ `form-control ${ isValidInput( form, 'name' ) ? 'is-invalid' : '' }` }
                             name="name"
                             placeholder="Nombre"
                             value={ values.name }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         />
+
+                        {
+                            isValidInput( form, 'name' ) && <small className="text-danger "> { errors.name } </small>
+                        }
                     </Form.Group>
                     <Form.Group as={ Col } md="5">
                         <label className="form-label">Apellido</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={ `form-control ${ isValidInput( form, 'lastName' ) ? 'is-invalid' : '' }` }
                             name="lastName"
                             placeholder="Apellido"
                             value={ values.lastName }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         />
+
+                        {
+                            isValidInput( form, 'lastName' ) && <small className="text-danger "> { errors.lastName } </small>
+                        }
+
                     </Form.Group>
                 </Row>
 
@@ -76,20 +97,27 @@ export default function StudentForm () {
                         <label className="form-label">Cedula</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={ `form-control ${ isValidInput( form, 'identificationCard' ) ? 'is-invalid' : '' }` }
                             name="identificationCard"
                             placeholder="Cedula"
                             value={ values.identificationCard }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         />
+
+                        {
+                            isValidInput( form, 'identificationCard' ) && <small className="text-danger "> { errors.identificationCard } </small>
+                        }
+
                     </Form.Group>
                     <Form.Group as={ Col } md="4">
                         <label className="form-label">Recinto</label>
                         <select
-                            className="form-select"
+                            className={ `form-select ${ isValidInput( form, 'locationId' ) ? 'is-invalid' : '' }` }
                             name="locationId"
                             value={ values.locationId }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         >
                             <option value="">Seleccione un recinto</option>
 
@@ -106,14 +134,20 @@ export default function StudentForm () {
                             }
 
                         </select>
+
+                        {
+                            isValidInput( form, 'locationId' ) && <small className="text-danger "> { errors.locationId } </small>
+                        }
+
                     </Form.Group>
                     <Form.Group as={ Col } md="4">
                         <label className="form-label">Genero</label>
                         <select
-                            className="form-select"
+                            className={ `form-select ${ isValidInput( form, 'sexId' ) ? 'is-invalid' : '' }` }
                             name="sexId"
                             value={ values.sexId }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         >
                             <option value="">Seleccione un genero</option>
 
@@ -129,6 +163,11 @@ export default function StudentForm () {
                                 ) )
                             }
                         </select>
+
+                        {
+                            isValidInput( form, 'sexId' ) && <small className="text-danger "> { errors.sexId } </small>
+                        }
+
                     </Form.Group>
                 </Row>
 
@@ -137,23 +176,34 @@ export default function StudentForm () {
                         <label className="form-label">Dirección</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={ `form-control ${ isValidInput( form, 'address' ) ? 'is-invalid' : '' }` }
                             name="address"
                             placeholder="Dirección"
                             value={ values.address }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         />
+
+                        {
+                            isValidInput( form, 'address' ) && <small className="text-danger "> { errors.address } </small>
+                        }
                     </Form.Group>
                     <Form.Group as={ Col } md="4">
                         <label className="form-label">Telefono</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={ `form-control ${ isValidInput( form, 'phone' ) ? 'is-invalid' : '' }` }
                             name="phone"
                             placeholder="Telefono"
                             value={ values.phone }
                             onChange={ handleChange }
+                            onBlur={ handleBlur }
                         />
+
+                        {
+                            isValidInput( form, 'phone' ) && <small className="text-danger "> { errors.phone } </small>
+                        }
+
                     </Form.Group>
                 </Row>
 

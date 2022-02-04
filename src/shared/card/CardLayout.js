@@ -46,6 +46,7 @@ function CardLayout ( {
                                 <button
                                     className='btn btn-primary'
                                     onClick={ onSubmit }
+                                    type="button"
                                 >
                                     Guardar
                                 </button>
