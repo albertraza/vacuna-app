@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import withData from "../../hocs/withData";
 import useGetRequest from "../../hooks/useGetRequest";
 import useTableActions from "../../hooks/useTableActions";
@@ -21,6 +22,7 @@ La información viene del servicio web https://vacunaapp.azurewebsites.net/api/e
 
 */
 export default function Employees () {
+    const navigate = useNavigate();
 
     function handleEdit ( data ) {
         console.log( { edit: data } );
@@ -50,7 +52,7 @@ export default function Employees () {
         <CardLayout
             title={ 'Listado de Empleados' }
             subHeader={
-                <PrimaryButton text={ 'Añadir empleado' } />
+                <PrimaryButton text={ 'Añadir empleado' } onClick={ e => navigate( '/empleados/nuevo' ) } />
             }
         >
             {
