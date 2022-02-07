@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
 export default function AppNavbar () {
@@ -18,6 +18,11 @@ export default function AppNavbar () {
                         <Nav.Link as={ Link } to="/" >Dashboard</Nav.Link>
                         <Nav.Link as={ Link } to="/estudiantes" >Estudiantes</Nav.Link>
                         <Nav.Link as={ Link } to="/empleados" >Empleados</Nav.Link>
+                        <NavDropdown title="Administración" id="basic-nav-dropdown">
+                            <NavDropdown.Item as={ Link } to="/administracion/recintos">Recintos</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/administracion/generos">Generos</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/administracion/vacunas">Vacunas</NavDropdown.Item>
+                        </NavDropdown>
                     </Nav>
                     {
                         userName && <Nav.Link> { userName } </Nav.Link>
