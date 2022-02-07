@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import withData from "../../hocs/withData";
 import useGetRequest from "../../hooks/useGetRequest";
 import useTableActions from "../../hooks/useTableActions";
+import { apiUrls } from "../../shared/apiUrls";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
 import Actions from "../../shared/components/Actions";
@@ -46,7 +47,7 @@ export default function Employees () {
         onDelete: handleDelete
     } );
 
-    const { data: employees, error, isLoading } = useGetRequest( `https://vacunaapp.azurewebsites.net/api/empleados` );
+    const { data: employees, error, isLoading } = useGetRequest( apiUrls.employees );
 
     return (
         <CardLayout

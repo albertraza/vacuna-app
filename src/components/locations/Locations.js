@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import useGetRequest from "../../hooks/useGetRequest";
 import useTableActions from "../../hooks/useTableActions";
+import { apiUrls } from "../../shared/apiUrls";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
 import Table from "../../shared/table/Table";
@@ -8,7 +9,7 @@ import { locationTableColumns } from "./helpers/locationTableColumns";
 
 export default function Locations () {
     const navigate = useNavigate();
-    const { data } = useGetRequest( `https://vacunaapp.azurewebsites.net/api/recintos` );
+    const { data } = useGetRequest( apiUrls.locations );
 
     const columns = useTableActions( {
         tableColumns: locationTableColumns,

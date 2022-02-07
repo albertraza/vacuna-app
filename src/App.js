@@ -10,26 +10,30 @@ import StudentForm from "./components/students/form/StudentForm";
 import EmployeeForm from "./components/employees/form/EmployeeForm";
 import Locations from "./components/locations/Locations";
 import LocationForm from "./components/locations/form/LocationForm";
+import { Provider } from 'react-redux';
+import store from "./redux/store";
 
 function App () {
     return (
         <>
-            <BrowserRouter>
-                <UserProvider>
-                    <AppNavbar />
-                    <Container>
-                        <Routes>
-                            <Route path="/" element={ <Dashboard /> } ></Route>
-                            <Route path="estudiantes" element={ <Students /> } ></Route>
-                            <Route path="estudiantes/nuevo" element={ <StudentForm /> } ></Route>
-                            <Route path="empleados" element={ <Employees /> } ></Route>
-                            <Route path="empleados/nuevo" element={ <EmployeeForm /> } ></Route>
-                            <Route path="administracion/recintos" element={ <Locations /> } ></Route>
-                            <Route path="administracion/recintos/nuevo" element={ <LocationForm /> } ></Route>
-                        </Routes>
-                    </Container>
-                </UserProvider>
-            </BrowserRouter>
+            <Provider store={ store }>
+                <BrowserRouter>
+                    <UserProvider>
+                        <AppNavbar />
+                        <Container>
+                            <Routes>
+                                <Route path="/" element={ <Dashboard /> } ></Route>
+                                <Route path="estudiantes" element={ <Students /> } ></Route>
+                                <Route path="estudiantes/nuevo" element={ <StudentForm /> } ></Route>
+                                <Route path="empleados" element={ <Employees /> } ></Route>
+                                <Route path="empleados/nuevo" element={ <EmployeeForm /> } ></Route>
+                                <Route path="administracion/recintos" element={ <Locations /> } ></Route>
+                                <Route path="administracion/recintos/nuevo" element={ <LocationForm /> } ></Route>
+                            </Routes>
+                        </Container>
+                    </UserProvider>
+                </BrowserRouter>
+            </Provider>
         </>
     )
 }
