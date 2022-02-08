@@ -1,15 +1,13 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { Alert, Spinner } from "react-bootstrap";
+import { useEffect } from "react";
+import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useNavigate } from "react-router";
-import withData from "../../hocs/withData";
-import useGetRequest from "../../hooks/useGetRequest";
 import useTableActions from "../../hooks/useTableActions";
-import { apiUrls } from "../../shared/apiUrls";
 import PrimaryButton from "../../shared/buttons/PrimaryButton";
 import CardLayout from "../../shared/card/CardLayout";
-import Actions from "../../shared/components/Actions";
 import Table from "../../shared/table/Table";
+import { employeeTableColumns } from "./helpers/employeeTableColumns";
+import { getEmployees, stopLoading } from "./reducers/employeesReducer";
 
 /*
 Necesito un listado de empleados
@@ -23,31 +21,19 @@ La información viene del servicio web https://vacunaapp.azurewebsites.net/api/e
 
 */
 export default function Employees () {
+    const { dataList, isLoading } = useSelector( state => state.employees, shallowEqual );
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    function handleEdit ( data ) {
-        console.log( { edit: data } );
-        // Accion de editar.
-    }
-
-    function handleDelete ( data ) {
-        console.log( { delete: data } );
-    }
-
-    const tableColumns = [
-        { label: 'Nombre', prop: 'name' },
-        { label: 'Apellido', prop: 'lastName' },
-        { label: 'Telefono', prop: 'phone' },
-        { label: 'Puesto', prop: 'position' }
-    ];
-
     const columns = useTableActions( {
-        tableColumns,
-        onEdit: handleEdit,
-        onDelete: handleDelete
+        tableColumns: employeeTableColumns,
+        onEdit: () => { },
+        onDelete: () => { }
     } );
 
-    const { data: employees, error, isLoading } = useGetRequest( apiUrls.employees );
+    useEffect( () => {
+        dispatch( getEmployees() );
+    }, [] )
 
     return (
         <CardLayout
@@ -56,29 +42,20 @@ export default function Employees () {
                 <PrimaryButton text={ 'Añadir empleado' } onClick={ e => navigate( '/empleados/nuevo' ) } />
             }
         >
+            <Table
+                columns={ columns }
+                data={ dataList }
+            />
             {
-                error ? (
-                    <Alert variant={ 'danger' }>
-                        Ocurrio un error al obtener la información.
-                    </Alert>
-                ) : (
-                    <>
-                        <Table
-                            columns={ columns }
-                            data={ employees }
-                        />
-                        {
-                            isLoading && (
-                                <div className="d-flex w-100">
-                                    <div style={ { margin: 'auto' } }>
-                                        <Spinner animation="grow" />
-                                    </div>
-                                </div>
-                            )
-                        }
-                    </>
+                isLoading && (
+                    <div className="d-flex w-100">
+                        <div style={ { margin: 'auto' } }>
+                            <Spinner animation="grow" />
+                        </div>
+                    </div>
                 )
             }
+
         </CardLayout>
 
     );
