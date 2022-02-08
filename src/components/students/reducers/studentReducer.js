@@ -11,7 +11,8 @@ const types = {
     stopLoading: '[STUDENT] STOP_LOADING',
     startSaving: '[STUDENT] START_SAVING',
     stopSaving: '[STUDENT] STOP_SAVING',
-    setValue: '[STUDENT] SET_VALUE'
+    setValue: '[STUDENT] SET_VALUE',
+    clearState: '[STUDENT] CLEAR_STATE'
 };
 
 const actions = {
@@ -19,7 +20,8 @@ const actions = {
     stopLoading: () => ( { type: types.stopLoading } ),
     startSaving: () => ( { type: types.startSaving } ),
     stopSaving: () => ( { type: types.stopSaving } ),
-    setValue: value => ( { type: types.setValue, payload: value } )
+    setValue: value => ( { type: types.setValue, payload: value } ),
+    clearState: () => ( { type: types.clearState } )
 };
 
 export const {
@@ -27,18 +29,33 @@ export const {
     stopLoading,
     startSaving,
     stopSaving,
-    setValue
+    setValue,
+    clearState
 } = actions;
 
 export function saveStudent () {
     return async ( dispatch, getState ) => {
         const { value } = getState().student;
-
         dispatch( startSaving() );
 
-        const { data } = await axios.post( apiUrls.students, { ...value } );
+        // evaluates to true if the id exists.
+        const isEdit = !!value.id;
+
+        const action = isEdit ? axios.put( `${ apiUrls.students }/${ value.id }`, { ...value } ) :
+            axios.post( apiUrls.students, { ...value } );
+
+        await action;
 
         dispatch( stopSaving() );
+    }
+}
+
+export function getStudent ( id ) {
+    return async ( dispatch ) => {
+        dispatch( startLoading() );
+        const { data } = await axios.get( `${ apiUrls.students }/${ id }` );
+        dispatch( setValue( data ) );
+        dispatch( stopLoading() );
     }
 }
 
@@ -47,12 +64,12 @@ export function studentReducer ( state = initialState, action ) {
         case types.startLoading:
             return {
                 ...state,
-                isLoadingData: true
+                isLoading: true
             };
         case types.stopLoading:
             return {
                 ...state,
-                isLoadingData: false
+                isLoading: false
             };
         case types.startSaving:
             return {
@@ -68,6 +85,10 @@ export function studentReducer ( state = initialState, action ) {
             return {
                 ...state,
                 value: action.payload
+            };
+        case types.clearState:
+            return {
+                ...initialState
             };
         default:
             return state;

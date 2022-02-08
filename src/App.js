@@ -25,6 +25,7 @@ function App () {
                                 <Route path="/" element={ <Dashboard /> } ></Route>
                                 <Route path="estudiantes" element={ <Students /> } ></Route>
                                 <Route path="estudiantes/nuevo" element={ <StudentForm /> } ></Route>
+                                <Route path="estudiantes/:id" element={ <StudentForm /> } ></Route>
                                 <Route path="empleados" element={ <Employees /> } ></Route>
                                 <Route path="empleados/nuevo" element={ <EmployeeForm /> } ></Route>
                                 <Route path="administracion/recintos" element={ <Locations /> } ></Route>

@@ -36,6 +36,15 @@ export function getStudents () {
     }
 }
 
+export function deleteStudent ( id, onFinishFn = () => { } ) {
+    return async ( dispatch, getState ) => {
+        const { data } = getState().students;
+        await axios.delete( `${ apiUrls.students }/${ id }` );
+        dispatch( setData( data.filter( student => student.id !== id ) ) )
+        // onFinishFn();
+    }
+}
+
 export function studentsReducer ( state = initialState, action ) {
     switch ( action.type ) {
         case types.startLoading:

@@ -7,7 +7,7 @@ import Table from "../../shared/table/Table";
 import { studentTableColumns } from "./helpers/studentTableColumns";
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
-import { clearState, getStudents } from "./reducers/studentsReducer";
+import { clearState, deleteStudent, getStudents } from "./reducers/studentsReducer";
 
 export default function Students () {
     const { data, isLoading } = useSelector( state => state.students );
@@ -16,8 +16,12 @@ export default function Students () {
 
     const columns = useTableActions( {
         tableColumns: studentTableColumns,
-        onEdit: () => { },
-        onDelete: () => { }
+        onEdit: ( { id } ) => {
+            navigate( `${ id }` );
+        },
+        onDelete: ( { id } ) => {
+            dispatch( deleteStudent( id ) );
+        }
     } );
 
     useEffect( () => {
