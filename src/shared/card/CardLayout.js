@@ -1,4 +1,4 @@
-import { Card } from 'react-bootstrap';
+import { Card, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 
@@ -8,7 +8,8 @@ function CardLayout ( {
     children,
     useFooter = false,
     returnUrl = '/',
-    onSubmit
+    onSubmit,
+    isSaving = false
 } ) {
     const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ function CardLayout ( {
                             className='btn btn-secondary'
                             style={ { marginRight: '5px' } }
                             onClick={ e => navigate( returnUrl ) }
+                            disabled={ isSaving }
                         >
                             Cancelar
                         </button>
@@ -44,11 +46,25 @@ function CardLayout ( {
                         {
                             onSubmit && (
                                 <button
-                                    className='btn btn-primary'
+                                    className={ `btn ${ isSaving ? 'btn-warning' : 'btn-primary' }` }
                                     onClick={ onSubmit }
                                     type="button"
+                                    disabled={ isSaving }
                                 >
-                                    Guardar
+                                    {
+                                        isSaving && (
+                                            <Spinner
+                                                as="span"
+                                                animation="border"
+                                                size="sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                            />
+                                        )
+                                    }
+                                    {
+                                        isSaving ? ' Guardando...' : 'Guardar'
+                                    }
                                 </button>
                             )
                         }

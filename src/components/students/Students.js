@@ -7,7 +7,7 @@ import Table from "../../shared/table/Table";
 import { studentTableColumns } from "./helpers/studentTableColumns";
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
-import { getStudents, stopLoading } from "./reducers/studentsReducer";
+import { clearState, getStudents } from "./reducers/studentsReducer";
 
 export default function Students () {
     const { data, isLoading } = useSelector( state => state.students );
@@ -22,7 +22,11 @@ export default function Students () {
 
     useEffect( () => {
         dispatch( getStudents() );
-    }, [] );
+
+        return () => {
+            dispatch( clearState() );
+        }
+    }, [ dispatch ] );
 
     return (
         <CardLayout

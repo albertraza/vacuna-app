@@ -1,17 +1,22 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { Col, Form, Row } from "react-bootstrap";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import useGetRequest from "../../../hooks/useGetRequest";
 import CardLayout from "../../../shared/card/CardLayout";
 import { isInvalidInput } from "../../../shared/form/isValidInput";
+import { saveStudent, setValue } from "../reducers/studentReducer";
 import { validationSchema } from "./validationSchema";
 
 export default function StudentForm () {
+    const { value, isLoading, isSaving } = useSelector( state => state.student, shallowEqual );
+    const dispatch = useDispatch();
     const { data: locations } = useGetRequest( 'https://vacunaapp.azurewebsites.net/api/recintos' );
     const { data: genders } = useGetRequest( 'https://vacunaapp.azurewebsites.net/api/generos' );
 
-    function handleSave ( values ) {
-        console.log( { values } );
+    function handleSave ( studentToSave ) {
+        dispatch( setValue( studentToSave ) );
+        dispatch( saveStudent() );
     }
 
     const form = useFormik( {
@@ -37,6 +42,7 @@ export default function StudentForm () {
             useFooter
             onSubmit={ handleSubmit }
             returnUrl="/estudiantes"
+            isSaving={ isSaving }
         >
             <Form>
 
