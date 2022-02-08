@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiUrls } from '../../../shared/apiUrls';
+import Swal from 'sweetalert2';
 export const initialState = {
     value: {},
     isLoading: true,
@@ -33,20 +34,44 @@ export const {
     clearState
 } = actions;
 
-export function saveStudent () {
+export function saveStudent ( onActionFn = () => { } ) {
     return async ( dispatch, getState ) => {
-        const { value } = getState().student;
-        dispatch( startSaving() );
+        try {
+            const { value } = getState().student;
+            dispatch( startSaving() );
 
-        // evaluates to true if the id exists.
-        const isEdit = !!value.id;
+            // evaluates to true if the id exists.
+            const isEdit = !!value.id;
 
-        const action = isEdit ? axios.put( `${ apiUrls.students }/${ value.id }`, { ...value } ) :
-            axios.post( apiUrls.students, { ...value } );
+            const action = isEdit ? axios.put( `${ apiUrls.students }/${ value.id }`, { ...value } ) :
+                axios.post( apiUrls.students, { ...value } );
 
-        await action;
+            await action;
 
-        dispatch( stopSaving() );
+            dispatch( stopSaving() );
+
+            Swal.fire( {
+                title: 'Información Guardada',
+                icon: 'success',
+                text: 'Información guardada correctamente.',
+                confirmButtonText: 'Confirmado',
+                allowEscapeKey: false,
+                allowOutsideClick: false
+            } ).then( result => {
+                if ( result ) {
+                    onActionFn();
+                }
+            } );
+        } catch ( err ) {
+            Swal.fire( {
+                title: 'Error',
+                icon: 'error',
+                text: 'No se pudo guardar la información...',
+                confirmButtonText: 'Ok',
+                allowEscapeKey: false,
+                allowOutsideClick: false
+            } );
+        }
     }
 }
 

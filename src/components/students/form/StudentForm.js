@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useEffect } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useGetRequest from "../../../hooks/useGetRequest";
 import CardLayout from "../../../shared/card/CardLayout";
 import Loading from "../../../shared/components/Loading";
@@ -11,15 +11,20 @@ import { clearState, getStudent, saveStudent, setValue, stopLoading } from "../r
 import { validationSchema } from "./validationSchema";
 
 export default function StudentForm () {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { value, isLoading, isSaving } = useSelector( state => state.student, shallowEqual );
     const dispatch = useDispatch();
     const { data: locations } = useGetRequest( 'https://vacunaapp.azurewebsites.net/api/recintos' );
     const { data: genders } = useGetRequest( 'https://vacunaapp.azurewebsites.net/api/generos' );
 
+    function goBack () {
+        navigate( '/estudiantes' );
+    }
+
     function handleSave ( studentToSave ) {
         dispatch( setValue( studentToSave ) );
-        dispatch( saveStudent() );
+        dispatch( saveStudent( goBack ) );
     }
 
     const form = useFormik( {

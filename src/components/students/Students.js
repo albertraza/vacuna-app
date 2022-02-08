@@ -8,6 +8,7 @@ import { studentTableColumns } from "./helpers/studentTableColumns";
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
 import { clearState, deleteStudent, getStudents } from "./reducers/studentsReducer";
+import Swal from 'sweetalert2';
 
 export default function Students () {
     const { data, isLoading } = useSelector( state => state.students );
@@ -20,7 +21,19 @@ export default function Students () {
             navigate( `${ id }` );
         },
         onDelete: ( { id } ) => {
-            dispatch( deleteStudent( id ) );
+            Swal.fire( {
+                title: '¿Esta seguro?',
+                icon: 'question',
+                text: 'La informacíon será eliminada correctamente, ¿esta seguro?',
+                confirmButtonText: 'Si',
+                showCancelButton: true,
+                allowEscapeKey: false,
+                allowOutsideClick: false
+            } ).then( result => {
+                if ( result.isConfirmed ) {
+                    dispatch( deleteStudent( id ) );
+                }
+            } );
         }
     } );
 
